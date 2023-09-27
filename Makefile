@@ -39,13 +39,13 @@ shell:
 	docker exec -it mke-ui-tests-run bash
 
 # This command must be run in the form of NPM_TOKEN="$NPM_TOKEN" make prepare-dependencies, or anything that substitutes a suitable value for $NPM_TOKEN
-prepare-dependencies:
+install:
 	# @echo "Setting Registry Token"
 	@echo ""
 	# docker exec -it mke-ui-tests-run npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
 	@echo "Installing dependencies..."
 	@echo ""
-	docker exec -it mke-ui-tests-run npm install
+	docker exec -it mke-ui-tests-run npm install --force
 
 list-tools:
 	@echo "Listing tools..."
@@ -68,31 +68,31 @@ prepare-job: list-tools prepare-env
 all-tests:
 	@echo "Running all tests..."
 	@echo ""
-	docker exec -it mke-ui-tests-run yarn ci
+	docker exec -it mke-ui-tests-run npm run lint && npm run ci
 	@echo ""
 
-ci-lint:
-	@echo "Running ESLint..."
-	@echo ""
-	docker exec -it mke-ui-tests-run yarn lint
-	@echo ""
+# ci-lint:
+# 	@echo "Running ESLint..."
+# 	@echo ""
+# 	docker exec -it mke-ui-tests-run yarn lint
+# 	@echo ""
 
-ci-unit:
-	@echo "Running unit tests..."
-	@echo ""
-	docker exec -it mke-ui-tests-run yarn ci:unit
-	@echo ""
+# ci-unit:
+# 	@echo "Running unit tests..."
+# 	@echo ""
+# 	docker exec -it mke-ui-tests-run yarn ci:unit
+# 	@echo ""
 
-ci-enzyme:
-	@echo "Running legacy enzyme tests..."
-	@echo ""
-	docker exec -it mke-ui-tests-run yarn ci:enzyme
-	@echo ""
+# ci-enzyme:
+# 	@echo "Running legacy enzyme tests..."
+# 	@echo ""
+# 	docker exec -it mke-ui-tests-run yarn ci:enzyme
+# 	@echo ""
 
-ci-rtl:
-	@echo "Running RTL tests..."
-	@echo ""
-	docker exec -it mke-ui-tests-run yarn ci:rtl
-	@echo ""
+# ci-rtl:
+# 	@echo "Running RTL tests..."
+# 	@echo ""
+# 	docker exec -it mke-ui-tests-run yarn ci:rtl
+# 	@echo ""
 
 # .PHONY: list-tools prepare-npm-env prepare-env prepare-job dependency-check tooling-image-update all-packages webimages-build webimages-push webimages-deploy webimages-capture tests publish-get-names publish-single publish-all publish-release
